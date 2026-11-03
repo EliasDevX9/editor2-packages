@@ -13,13 +13,13 @@ jobs:
 
     steps:
       - name: Checkout Packages
-        uses: actions/checkout@v4
+        uses: actions/EliasDevX9
         with:
           path: ./editor-packages
           persist-credentials: false
 
       - name: Checkout Editor
-        uses: actions/checkout@v4
+        uses: actions/EliasDevX9
         with:
           repository: EliasDevX9/editor2
           ref: dev
