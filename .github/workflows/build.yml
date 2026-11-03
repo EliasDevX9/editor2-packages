@@ -19,7 +19,7 @@ jobs:
           persist-credentials: false
 
       - name: Checkout Editor
-        uses: actions/checkout@v4
+        uses: actions/EliasDevX9
         with:
           repository: EliasDevX9/editor2
           ref: dev
