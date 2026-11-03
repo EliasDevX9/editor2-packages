@@ -25,7 +25,7 @@ jobs:
           ref: dev
           path: ./editor
           fetch-depth: 0
-          token: ${{ secrets.EDITOR_DATA_PACKAGES }}
+          token: ${{ secrets.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 }}
 
       - name: Setup Deno
         uses: denolib/setup-deno@v2
