@@ -1,53 +1,56 @@
+
 name: Build Data
 
 on:
-    push:
-        branches:
-            - main
-    workflow_dispatch:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout Packages 🛎
-              uses: actions/checkout@v2
-              with:
-                  path: './editor-packages'
-                  persist-credentials: false
+  build:
+    runs-on: ubuntu-latest
 
-            - name: Checkout Editor 🛎
-              uses: actions/checkout@v2
-              with:
-                  repository: 'EliasDevX9/editor2'
-                  ref: 'dev'
-                  path: './editor'
-                  fetch-depth: 0
-                  persist-credentials: false
+    steps:
+      - name: Checkout Packages
+        uses: actions/checkout@v4
+        with:
+          path: ./editor-packages
+          persist-credentials: false
 
-            - name: Setup Deno 🚧
-              uses: denolib/setup-deno@v2
-              with:
-                  deno-version: v1.37.X
+      - name: Checkout Editor
+        uses: actions/checkout@v4
+        with:
+          repository: EliasDevX9/editor2
+          ref: dev
+          path: ./editor
+          fetch-depth: 0
+          token: ${{ secrets.EDITOR_DATA_PACKAGES }}
 
-            - name: Build data 🔧
-              run: |
-                  cd ./editor-packages
-                  deno task build
-                  mv packages.zip ../editor/public
-                  mv dataPackage.ts ../editor/src/utils/app
+      - name: Setup Deno
+        uses: denolib/setup-deno@v2
+        with:
+          deno-version: v1.37.X
 
-            - name: Commit files ✅
-              run: |
-                  cd ./editor
-                  git config --local user.email "${{ github.event.pusher.email }}"
-                  git config --local user.name "${{ github.event.pusher.name }}"
-                  git add -A && git commit -m "${{ github.event.head_commit.message }}"
+      - name: Build Data
+        run: |
+          cd ./editor-packages
+          deno task build
+          mv packages.zip ../editor/public
+          mv dataPackage.ts ../editor/src/utils/app
 
-            - name: Push changes 🔼
-              uses: ad-m/github-push-action@v0.6.0
-              with:
-                  directory: './editor'
-                  repository: 'EliasDevX9/editor2'
-                  branch: 'dev'
-                  github_token: ${{ secrets.EDITOR_DATA_PACKAGES }}
+      - name: Commit and Push
+        run: |
+          cd ./editor
+
+          git config user.name "EliasDevX9"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+
+          if ! git diff --cached --quiet; then
+            git commit -m "Update Minecraft Bedrock editor data"
+            git push origin dev
+          else
+            echo "No changes to publish"
+          fi
