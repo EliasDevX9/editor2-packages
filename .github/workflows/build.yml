@@ -19,7 +19,7 @@ jobs:
             - name: Checkout Editor 🛎
               uses: actions/checkout@v2
               with:
-                  repository: 'bridge-core/editor'
+                  repository: 'EliasDevX9/editor2'
                   ref: 'dev'
                   path: './editor'
                   fetch-depth: 0
@@ -48,6 +48,6 @@ jobs:
               uses: ad-m/github-push-action@v0.6.0
               with:
                   directory: './editor'
-                  repository: 'bridge-core/editor'
+                  repository: 'EliasDevX9/editor2'
                   branch: 'dev'
                   github_token: ${{ secrets.EDITOR_DATA_PACKAGES }}
