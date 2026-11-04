@@ -1,53 +1,60 @@
+
 name: Build Data
 
 on:
-    push:
-        branches:
-            - main
-    workflow_dispatch:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout Packages 🛎
-              uses: actions/checkout@v2
-              with:
-                  path: './editor-packages'
-                  persist-credentials: false
+  build:
+    runs-on: ubuntu-latest
 
-            - name: Checkout Editor 🛎
-              uses: actions/checkout@v2
-              with:
-                  repository: 'bridge-core/editor'
-                  ref: 'dev'
-                  path: './editor'
-                  fetch-depth: 0
-                  persist-credentials: false
+    steps:
+      - name: Checkout Packages
+        uses: actions/checkout@v4
+        with:
+          path: ./editor-packages
 
-            - name: Setup Deno 🚧
-              uses: denolib/setup-deno@v2
-              with:
-                  deno-version: v1.37.X
+      - name: Checkout Editor
+        uses: actions/checkout@v4
+        with:
+          repository: EliasDevX9/editor2
+          ref: main
+          path: ./editor
+          fetch-depth: 0
+          token: ${{ secrets.EDITOR2_TOKEN }}
+          persist-credentials: false
 
-            - name: Build data 🔧
-              run: |
-                  cd ./editor-packages
-                  deno task build
-                  mv packages.zip ../editor/public
-                  mv dataPackage.ts ../editor/src/utils/app
+      - name: Setup Deno
+        uses: denolib/setup-deno@v2
+        with:
+          deno-version: v1.37.X
 
-            - name: Commit files ✅
-              run: |
-                  cd ./editor
-                  git config --local user.email "${{ github.event.pusher.email }}"
-                  git config --local user.name "${{ github.event.pusher.name }}"
-                  git add -A && git commit -m "${{ github.event.head_commit.message }}"
+      - name: Build data
+        run: |
+          cd ./editor-packages
+          deno task build
+          mv packages.zip ../editor/public/
+          sha256sum packages.zip | cut -d ' ' -f1 > ../editor/public/hash
 
-            - name: Push changes 🔼
-              uses: ad-m/github-push-action@v0.6.0
-              with:
-                  directory: './editor'
-                  repository: 'bridge-core/editor'
-                  branch: 'dev'
-                  github_token: ${{ secrets.EDITOR_DATA_PACKAGES }}
+      - name: Commit files
+        working-directory: ./editor
+        run: |
+          git config user.name "EliasDevX9"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/packages.zip public/hash
+          if git diff --cached --quiet; then
+            echo "No changes to publish"
+            exit 0
+          fi
+          git commit -m "Update generated package data"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          directory: ./editor
+          repository: EliasDevX9/editor2
+          branch: main
+          github_token: ${{ secrets.EDITOR2_TOKEN }}
