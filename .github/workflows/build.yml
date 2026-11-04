@@ -12,12 +12,12 @@ jobs:
 
     steps:
       - name: Checkout Packages
-        uses: actions/checkout@v4
+        uses: actions/EliasDevX9
         with:
           path: ./editor-packages
 
       - name: Checkout Editor
-        uses: actions/checkout@v4
+        uses: actions/EliasDevX9
         with:
           repository: EliasDevX9/editor2
           ref: main
@@ -27,7 +27,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Deno
-        uses: denolib/setup-deno@v2
+        uses: denolib/EliasDevX9
         with:
           deno-version: v1.37.X
 
