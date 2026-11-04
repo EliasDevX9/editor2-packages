@@ -1,4 +1,3 @@
-
 name: Build Data
 
 on:
@@ -24,7 +23,7 @@ jobs:
           ref: main
           path: ./editor
           fetch-depth: 0
-          token: ${{ secrets.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 }}
+          token: ${{ secrets.EDITOR_PUSH_TOKEN }}
           persist-credentials: false
 
       - name: Setup Deno
@@ -57,4 +56,4 @@ jobs:
           directory: ./editor
           repository: EliasDevX9/editor2
           branch: main
-          github_token: ${{ secrets.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 }}
+          github_token: ${{ secrets.EDITOR_PUSH_TOKEN }}
