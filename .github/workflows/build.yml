@@ -21,7 +21,7 @@ jobs:
         with:
           repository: EliasDevX9/editor2
           ref: main
-          path: ./editor
+          path: ./editor2
           fetch-depth: 0
           token: ${{ secrets.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 }}
           persist-credentials: false
@@ -39,7 +39,7 @@ jobs:
           sha256sum packages.zip | cut -d ' ' -f1 > ../editor/public/hash
 
       - name: Commit files
-        working-directory: ./editor
+        working-directory: ./editor2
         run: |
           git config user.name "EliasDevX9"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -53,7 +53,7 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
         with:
-          directory: ./editor
+          directory: ./editor2
           repository: EliasDevX9/editor2
           branch: main
           github_token: ${{ secrets.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 }}
