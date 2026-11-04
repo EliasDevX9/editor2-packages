@@ -24,7 +24,7 @@ jobs:
           ref: main
           path: ./editor
           fetch-depth: 0
-          token: ${{ secrets.EDITOR2_TOKEN }}
+          token: ${{ secrets.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 }}
           persist-credentials: false
 
       - name: Setup Deno
@@ -57,4 +57,4 @@ jobs:
           directory: ./editor
           repository: EliasDevX9/editor2
           branch: main
-          github_token: ${{ secrets.EDITOR2_TOKEN }}
+          github_token: ${{ secrets.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 }}
