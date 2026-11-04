@@ -1,0 +1,12 @@
+.DS_Store
+
+!dist/
+dist/*
+!dist/minecraftBedrock
+dist/minecraftBedrock/*
+!dist/minecraftBedrock/fileDefinitions.json
+
+.env
+packages.zip
+dataPackage.ts
+scripts/vanillaData/raw

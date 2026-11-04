@@ -17,3 +17,11 @@ To view the local data packages ensure that `Force Data Download` is enabled ins
 ## Build for production
 
 This repo hosts a GitHub action that automatically builds the packages folder and commits it to the `dev` branch of our [bridge-core/editor](https://github.com/bridge-core/editor) repo. You can manually trigger a build by running `deno task build`.
+
+
+## Update vanilla data from bedrock-samples (no Windows needed)
+
+1. Download/extract [Mojang/bedrock-samples](https://github.com/Mojang/bedrock-samples) (folder with `behavior_pack`, `resource_pack`, `documentation` and `metadata`).
+2. Run `node --experimental-strip-types scripts/vanillaData/fromSamples.mjs /path/to/bedrock-samples` (Node >= 22.6) or `deno task update-from-samples -- /path/to/bedrock-samples`.
+
+Data is merged: existing values are kept and new ones are added. Last update: bedrock-samples v1.26.60.5.
