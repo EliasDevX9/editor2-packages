@@ -12,22 +12,22 @@ jobs:
 
     steps:
       - name: Checkout Packages
-        uses: actions/EliasDevX9
+        uses: actions/checkout@v4
         with:
           path: ./editor-packages
 
       - name: Checkout Editor
-        uses: actions/EliasDevX9
+        uses: actions/checkout@v4
         with:
           repository: EliasDevX9/editor2
           ref: main
-          path: ./editor2
+          path: ./editor
           fetch-depth: 0
-          token: ${{ secrets.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 }}
+          token: ${{ secrets.EDITOR_PUSH_TOKEN }}
           persist-credentials: false
 
       - name: Setup Deno
-        uses: denolib/EliasDevX9
+        uses: denolib/setup-deno@v2
         with:
           deno-version: v1.37.X
 
@@ -39,7 +39,7 @@ jobs:
           sha256sum packages.zip | cut -d ' ' -f1 > ../editor/public/hash
 
       - name: Commit files
-        working-directory: ./editor2
+        working-directory: ./editor
         run: |
           git config user.name "EliasDevX9"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -53,7 +53,7 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
         with:
-          directory: ./editor2
+          directory: ./editor
           repository: EliasDevX9/editor2
           branch: main
-          github_token: ${{ secrets.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 }}
+          github_token: ${{ secrets.EDITOR_PUSH_TOKEN }}
